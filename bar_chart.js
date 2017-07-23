@@ -7,10 +7,13 @@ plot_bar_graph(dataArray, "#bar_chart");
 function plot_bar_graph (dataArray, htmlObjectId) {
     var width = 500;
     var height = 400;
-            
+    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = width - margin.left - margin.right,
+    height = height - margin.top - margin.bottom;
+
     var heightScale = d3.scaleLinear()
-                            .domain([0,50])
-                            .range([0,height]);
+                            .domain([50,0])
+                            .range([0, height]);
 
     var axis = d3.axisRight()
                 .ticks(10)
@@ -18,8 +21,9 @@ function plot_bar_graph (dataArray, htmlObjectId) {
 
     var canvas = d3.select(htmlObjectId)
                     .append("svg")
-                    .attr("width", width)
-                    .attr("height", height);
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var bars = canvas.selectAll("rect")
                     .data(dataArray)
@@ -32,5 +36,6 @@ function plot_bar_graph (dataArray, htmlObjectId) {
 
     canvas.append("g")
               .call(axis);
+             
 
 }                            
